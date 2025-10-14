@@ -1,4 +1,5 @@
-﻿using ECommerce.CatalogService.API.Data.Context;
+﻿using ECommerce.BuildingBlocks.Shared.Kernel.Auth.Options;
+using ECommerce.CatalogService.API.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Space.DependencyInjection;
@@ -74,18 +75,18 @@ public static class ServiceInstaller
         });
         #endregion
 
-        //#region Auth
-        //services.AddHttpContextAccessor();
+        #region Auth
+        services.AddHttpContextAccessor();
 
-        //services.ConfigureOptions<JwtBearerOptionsSetup>();
+        services.ConfigureOptions<JwtBearerOptionsSetup>();
 
-        //services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
+        services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
 
-        //services.AddAuthentication()
-        //    .AddJwtBearer();
+        services.AddAuthentication()
+            .AddJwtBearer();
 
-        //services.AddAuthorization();
-        //#endregion
+        services.AddAuthorization();
+        #endregion
 
         return services;
     }
