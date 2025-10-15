@@ -1,7 +1,7 @@
 ﻿using Space.Abstraction;
 using Space.Abstraction.Contracts;
 
-namespace ECommerce.CatalogService.API.UseCases.Commands;
+namespace ECommerce.CatalogService.API.UseCases.Commands.Categories;
 
 public record CreateCategoryCommand(
     string Name,

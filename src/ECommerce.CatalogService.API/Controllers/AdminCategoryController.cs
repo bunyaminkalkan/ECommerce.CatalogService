@@ -1,4 +1,5 @@
 ﻿using ECommerce.CatalogService.API.UseCases.Commands;
+using ECommerce.CatalogService.API.UseCases.Commands.Categories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Space.Abstraction;

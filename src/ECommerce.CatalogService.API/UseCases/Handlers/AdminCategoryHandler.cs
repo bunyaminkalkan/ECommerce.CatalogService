@@ -1,7 +1,7 @@
 ﻿using ECommerce.BuildingBlocks.Shared.Kernel.Exceptions;
 using ECommerce.CatalogService.API.Data.Context;
 using ECommerce.CatalogService.API.Domain.Entities;
-using ECommerce.CatalogService.API.UseCases.Commands;
+using ECommerce.CatalogService.API.UseCases.Commands.Categories;
 using Microsoft.EntityFrameworkCore;
 using Space.Abstraction;
 using Space.Abstraction.Attributes;
