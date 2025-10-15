@@ -1,5 +1,6 @@
 ﻿using ECommerce.BuildingBlocks.Shared.Kernel.Auth.Options;
 using ECommerce.CatalogService.API.Data.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Space.DependencyInjection;
@@ -82,7 +83,11 @@ public static class ServiceInstaller
 
         services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
 
-        services.AddAuthentication()
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer();
 
         services.AddAuthorization();
