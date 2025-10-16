@@ -1,3 +1,4 @@
+using ECommerce.BuildingBlocks.Shared.Kernel.Extensions;
 using ECommerce.CatalogService.API;
 using Scalar.AspNetCore;
 
@@ -16,10 +17,11 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(options =>
     {
         options.WithTitle("CatalogService API")
-              .WithTheme(ScalarTheme.BluePlanet)
-              .WithModels(false);
+              .WithTheme(ScalarTheme.BluePlanet);
     });
 }
+
+app.UseExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

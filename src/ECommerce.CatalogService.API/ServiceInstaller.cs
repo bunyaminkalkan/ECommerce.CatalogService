@@ -1,4 +1,5 @@
 ﻿using ECommerce.BuildingBlocks.Shared.Kernel.Auth.Options;
+using ECommerce.BuildingBlocks.Shared.Kernel.Middlewares;
 using ECommerce.CatalogService.API.Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +75,10 @@ public static class ServiceInstaller
         {
             configuration.ServiceLifetime = ServiceLifetime.Scoped;
         });
+        #endregion
+
+        #region Exceptions
+        services.AddScoped<ExceptionMiddleware>();
         #endregion
 
         #region Auth
