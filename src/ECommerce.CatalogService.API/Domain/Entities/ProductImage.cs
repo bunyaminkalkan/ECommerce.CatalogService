@@ -2,8 +2,8 @@
 
 public class ProductImage
 {
-    public Guid Id { get; set; }
-    public string Url { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public string Url { get; set; } = default!;
     public bool IsMain { get; set; } = false;
 
     public Guid ProductId { get; set; }

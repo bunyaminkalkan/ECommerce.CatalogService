@@ -2,15 +2,15 @@
 
 public class Product
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
 
-    public string Name { get; set; }
-    public string Slug { get; set; }
-    public string Description { get; set; }
-    public string ShortDescription { get; set; }
+    public string Name { get; set; } = default!;
+    public string Slug { get; set; } = default!;
+    public string Description { get; set; } = default!;
+    public string ShortDescription { get; set; } = default!;
     public decimal Price { get; set; }
 
-    public Guid InventoryItemId { get; set; } // InventoryService’deki item id
+    public Guid InventoryItemId { get; set; } = Guid.CreateVersion7();
 
     public List<ProductImage> Images { get; set; } = new();
 
