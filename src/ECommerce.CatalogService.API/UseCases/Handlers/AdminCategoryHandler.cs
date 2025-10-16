@@ -1,4 +1,4 @@
-﻿using ECommerce.BuildingBlocks.Shared.Kernel.Exceptions;
+using ECommerce.BuildingBlocks.Shared.Kernel.Exceptions;
 using ECommerce.CatalogService.API.Data.Context;
 using ECommerce.CatalogService.API.Domain.Entities;
 using ECommerce.CatalogService.API.UseCases.Commands.Categories;
@@ -16,27 +16,37 @@ public class AdminCategoryHandler(AppDbContext appDbContext)
     {
         ctx.CancellationToken.ThrowIfCancellationRequested();
 
-        if (await appDbContext.Categories.AnyAsync(c => c.Name == ctx.Request.Name))
+        var request = ctx.Request;
+        var slug = request.Name.ToLowerInvariant();
+
+        var existingCategory = await appDbContext.Categories.FirstOrDefaultAsync(c => c.Name == request.Name);
+        if (existingCategory != null)
             throw new BadRequestException("Category already exists");
-
-        var parentCategory = await appDbContext.Categories.FirstOrDefaultAsync(c => c.Name == ctx.Request.ParentCategoryName);
-
-        if (parentCategory == null)
-            throw new BadRequestException("Parent category is not found");
-
-        var slug = ctx.Request.Name.ToLower();
 
         var category = new Category
         {
-            Name = ctx.Request.Name,
+            Name = request.Name,
             Slug = slug,
-            ParentCategory = parentCategory,
-            ParentCategoryId = parentCategory.Id,
-            HierarchyPath = parentCategory.HierarchyPath + "/" + slug
         };
 
+        if (!string.IsNullOrWhiteSpace(request.ParentCategoryName))
+        {
+            var parent = await appDbContext.Categories.FirstOrDefaultAsync(c => c.Name == request.ParentCategoryName);
+
+            if (parent == null)
+                throw new BadRequestException("Parent category is not found");
+
+            category.ParentCategory = parent;
+            category.ParentCategoryId = parent.Id;
+            category.HierarchyPath = $"{parent.HierarchyPath}/{slug}";
+        }
+        else
+        {
+            category.HierarchyPath = slug;
+        }
+
         await appDbContext.Categories.AddAsync(category);
-        await appDbContext.SaveChangesAsync();
+        await appDbContext.SaveChangesAsync(ctx.CancellationToken);
 
         return Nothing.Value;
     }
