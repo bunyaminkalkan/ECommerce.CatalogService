@@ -1,4 +1,6 @@
-﻿using ECommerce.BuildingBlocks.Shared.Kernel.Exceptions;
+﻿using ECommerce.BuildingBlocks.EventBus.Base.Abstractions;
+using ECommerce.BuildingBlocks.EventBus.Base.Events.Catalogs;
+using ECommerce.BuildingBlocks.Shared.Kernel.Exceptions;
 using ECommerce.CatalogService.API.Common.Mappers;
 using ECommerce.CatalogService.API.Data.Context;
 using ECommerce.CatalogService.API.Domain.Entities;
@@ -11,7 +13,7 @@ using Space.Abstraction.Context;
 
 namespace ECommerce.CatalogService.API.UseCases.Handlers;
 
-public class AdminProductHandler(AppDbContext appDbContext)
+public class AdminProductHandler(AppDbContext appDbContext, IEventBus eventBus)
 {
     [Handle]
     public async Task<ProductResponse> CreateProductAsync(HandlerContext<CreateProductCommand> ctx)
@@ -86,6 +88,8 @@ public class AdminProductHandler(AppDbContext appDbContext)
         var brand = await appDbContext.Brands.FirstOrDefaultAsync(b => b.Name == request.BrandName)
             ?? throw new BadRequestException($"{request.BrandName} not found");
 
+        var oldPrice = product.Price;
+
         product.Name = request.Name;
         product.Description = request.Description;
         product.ShortDescription = request.ShortDescription;
@@ -123,6 +127,12 @@ public class AdminProductHandler(AppDbContext appDbContext)
         product.Specifications = productSpecifications;
 
         appDbContext.Products.Update(product);
+
+        if (oldPrice != request.Price)
+        {
+            await eventBus.PublishAsync(new ProductPriceUpdatedIntegrationEvent(product.Id, oldPrice, request.Price));
+        }
+
         await appDbContext.SaveChangesAsync();
 
         return ProductMapper.MapProductResponse(product);

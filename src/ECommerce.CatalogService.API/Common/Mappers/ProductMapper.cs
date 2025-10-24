@@ -16,8 +16,6 @@ public static class ProductMapper
             ShortDescription = product.ShortDescription,
             Price = product.Price,
 
-            InventoryItemId = product.InventoryItemId,
-
             CategoryId = product.CategoryId,
             CategoryName = product.Category?.Name ?? string.Empty,
             CategorySlug = product.Category?.Slug ?? string.Empty,

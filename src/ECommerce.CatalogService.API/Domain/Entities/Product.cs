@@ -1,4 +1,6 @@
-﻿namespace ECommerce.CatalogService.API.Domain.Entities;
+﻿using ECommerce.BuildingBlocks.Shared.Kernel.ValueObjects;
+
+namespace ECommerce.CatalogService.API.Domain.Entities;
 
 public class Product
 {
@@ -8,9 +10,7 @@ public class Product
     public string Slug { get; set; } = default!;
     public string Description { get; set; } = default!;
     public string ShortDescription { get; set; } = default!;
-    public decimal Price { get; set; }
-
-    public Guid InventoryItemId { get; set; } = Guid.CreateVersion7();
+    public Money Price { get; set; }
 
     public List<ProductImage> Images { get; set; } = new();
 

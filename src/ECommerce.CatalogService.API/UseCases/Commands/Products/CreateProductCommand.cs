@@ -1,4 +1,5 @@
-﻿using ECommerce.CatalogService.API.UseCases.Responses;
+﻿using ECommerce.BuildingBlocks.Shared.Kernel.ValueObjects;
+using ECommerce.CatalogService.API.UseCases.Responses;
 using Space.Abstraction.Contracts;
 
 namespace ECommerce.CatalogService.API.UseCases.Commands.Products;
@@ -7,7 +8,7 @@ public record CreateProductCommand(
     string Name,
     string Description,
     string ShortDescription,
-    decimal Price,
+    Money Price,
     List<string> Images,
     string CategoryName,
     string BrandName,

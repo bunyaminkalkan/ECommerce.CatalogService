@@ -1,4 +1,6 @@
-﻿namespace ECommerce.CatalogService.API.UseCases.Responses;
+﻿using ECommerce.BuildingBlocks.Shared.Kernel.ValueObjects;
+
+namespace ECommerce.CatalogService.API.UseCases.Responses;
 
 public class ProductResponse
 {
@@ -8,10 +10,7 @@ public class ProductResponse
     public string Slug { get; set; } = default!;
     public string Description { get; set; } = default!;
     public string ShortDescription { get; set; } = default!;
-
-    public decimal Price { get; set; }
-
-    public Guid InventoryItemId { get; set; }
+    public Money Price { get; set; }
 
     public Guid CategoryId { get; set; }
     public string CategoryName { get; set; } = default!;

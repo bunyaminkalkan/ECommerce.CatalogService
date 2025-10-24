@@ -1,4 +1,6 @@
-﻿using ECommerce.BuildingBlocks.Shared.Kernel.Auth.Options;
+﻿using ECommerce.BuildingBlocks.EventBus.Base;
+using ECommerce.BuildingBlocks.EventBus.RabbitMQ;
+using ECommerce.BuildingBlocks.Shared.Kernel.Auth.Options;
 using ECommerce.BuildingBlocks.Shared.Kernel.Middlewares;
 using ECommerce.CatalogService.API.Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,7 +10,7 @@ using Space.DependencyInjection;
 
 namespace ECommerce.CatalogService.API;
 
-public static class ServiceInstaller
+public static class DependencyInjection
 {
     private const string SectionName = "PostgreSQL";
 
@@ -63,6 +65,13 @@ public static class ServiceInstaller
         });
         #endregion
 
+        #region RabbitMQ
+        var eventBusConfig = configuration
+            .GetSection("EventBusConfig")
+            .Get<EventBusConfig>();
+
+        services.AddRabbitMQEventBus(eventBusConfig!, new[] { typeof(Program).Assembly });
+        #endregion
 
         #region Interfaces
         #endregion

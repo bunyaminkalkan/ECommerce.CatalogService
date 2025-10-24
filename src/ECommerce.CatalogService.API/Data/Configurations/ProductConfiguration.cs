@@ -29,12 +29,18 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired()
             .HasMaxLength(500);
 
-        builder.Property(p => p.Price)
-            .IsRequired()
-            .HasColumnType("decimal(18,2)");
+        builder.ComplexProperty(p => p.Price, money =>
+        {
+            money.Property(m => m.Amount)
+                .HasColumnName("TotalAmount")
+                .HasPrecision(18, 2)
+                .IsRequired();
 
-        builder.Property(p => p.InventoryItemId)
-            .IsRequired();
+            money.Property(m => m.Currency)
+                .HasColumnName("Currency")
+                .HasMaxLength(3)
+                .IsRequired();
+        });
 
         builder.Property(p => p.CreatedAt)
             .IsRequired();
@@ -75,12 +81,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.HasIndex(p => p.BrandId);
 
-        builder.HasIndex(p => p.InventoryItemId);
-
         builder.HasIndex(p => p.IsActive);
 
         builder.HasIndex(p => new { p.IsActive, p.CategoryId });
-
-        builder.HasIndex(p => new { p.IsActive, p.Price });
     }
 }
